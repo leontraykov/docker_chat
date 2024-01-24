@@ -1,0 +1,11 @@
+<div class="input-group my-4 row d-flex justify-content-center">
+  <%= form_with(model: [@exact_room ,@message], remote: true, class: "d-flex col-10 justify-content-center",
+  data: { controller: "reset", action: "turbo:submit-end->reset#reset"} ) do |f| %>
+
+    <%= f.text_field :content, id: "chat-text", class: "form-control mx-4 rounded-4", placeholder: "Type here...", autocomplete: "off" %>
+    <%= button_tag(type: 'submit', class: "btn rounded-4 btn-outline-warning d-flex", data: { disable_with: false }) do %>
+      Send <i class="bi bi-send ms-2"></i>
+    <% end %>
+
+  <% end %>
+</div>

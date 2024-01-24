@@ -1,0 +1,19 @@
+<div class="container my-4">
+  <h2 class="fs-1">Chat Room: <%= @exact_room.name %></h2>
+
+  <h3>Chat Participants:</h3>
+  <ul>
+    <% @exact_room.users.each do |user| %>
+      <li><%= user.name %></li>
+    <% end %>
+  </ul>
+
+  <%= link_to "Leave", root_path, id: "leave-button", class:"leave-button fs-5 text-white-50" %>
+
+  <%= turbo_stream_from @exact_room %>
+  <div id="messages" data-controller="scroll" class="message-field mt-4 border border-light rounded-4">
+    <%= render @messages %>
+  </div>
+
+  <%= render partial: "layouts/new_message_form" %>
+</div>
