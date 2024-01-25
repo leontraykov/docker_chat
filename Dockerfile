@@ -2,8 +2,6 @@ FROM ruby:3.2.2
 
 RUN apt-get update -qq && apt-get install -y nodejs npm postgresql-client
 
-RUN npm install -g sass
-
 WORKDIR /docker_chat
 
 RUN curl -fsSL https://bun.sh/install | bash

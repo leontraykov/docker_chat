@@ -30,7 +30,7 @@ if [ ! -f /opt/app-initialized/initialized ]; then
   done
 
   touch /opt/app-initialized/initialized
-  
+
   echo "Dropping the database..."
   bundle exec rake db:drop 
   echo "Database dropping completed."
@@ -38,7 +38,7 @@ if [ ! -f /opt/app-initialized/initialized ]; then
   echo "Creating the database..."
   bundle exec rake db:create
   echo "Database creating completed."
-  
+
   echo "Migrating the database..."
   bundle exec rake db:migrate
   echo "Database migrating completed."
