@@ -8,6 +8,10 @@ if [ "$1" == "tests" ]; then
   done
   echo "PostgreSQL is available now."
 
+  bundle exec bun install
+  bundle exec bun run build
+  bundle exec bun run build:css
+
   bundle exec rake db:create RAILS_ENV=test
   bundle exec rake db:migrate RAILS_ENV=test
 
@@ -29,6 +33,10 @@ if [ ! -f /opt/app-initialized/initialized ]; then
     sleep 2
   done
 
+  bundle exec bun install
+  bundle exec bun run build
+  bundle exec bun run build:css
+  
   touch /opt/app-initialized/initialized
 
   echo "Dropping the database..."

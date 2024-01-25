@@ -16,10 +16,6 @@ RUN bun install
 
 COPY . /docker_chat
 
-RUN bun run build
-RUN bun build:css:compile
-RUN bun build:css:prefix
-
 COPY entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
 
