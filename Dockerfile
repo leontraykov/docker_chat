@@ -3,7 +3,9 @@ FROM ruby:3.2.2
 
 # Update and install dependencies
 RUN apt-get update -qq && \
-    apt-get install -y nodejs npm postgresql-client
+    apt-get install -y nodejs npm postgresql-client && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # Set the working directory inside the container
 WORKDIR /docker_chat
@@ -23,10 +25,6 @@ RUN bun install
 
 # Copy the application code to the container
 COPY . /docker_chat
-
-RUN bundle exec bun install
-RUN bundle exec bun run build
-RUN bundle exec bun run build:css
 
 # Set entrypoint and permissions
 COPY entrypoint.sh /usr/bin/

@@ -31,6 +31,11 @@ if [ "$1" == "tests" ]; then
   until pg_isready -h db -p 5432 -U user; do
     sleep 2
   done
+
+  bundle exec bun install
+  bundle exec bun run build
+  bundle exec bun run build:css
+
   check_and_create_db "docker_chat_test" "test"
 
   echo "PostgreSQL is available now."
@@ -51,5 +56,9 @@ fi
 if [ -f tmp/pids/server.pid ]; then
   rm tmp/pids/server.pid
 fi
+
+bundle exec bun install
+bundle exec bun run build
+bundle exec bun run build:css
 
 exec "$@"
