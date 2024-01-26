@@ -20,14 +20,14 @@
     git clone https://github.com/leontraykov/docker_chat.git <папка>
     cd <папка>
 
-Запустите тесты:
-
-    docker compose run tests
-
 Запустите приложение с помощью Docker:
 
     docker compose build
     docker compose up
+
+Запустите тесты:
+
+    docker compose run tests
 
 Откройте приложение в браузере по адресу http://localhost:5000
 
@@ -54,13 +54,13 @@ Clone the repository:
     git clone https://github.com/leontraykov/docker_chat.git <folder>
     cd <folder>
 
-Run the tests:
-
-    docker compose run tests
-
 Launch the application using Docker:
 
     docker compose build
     docker compose up
+
+Run the tests:
+
+    docker compose run tests
 
 Open the application in a browser at http://localhost:5000.

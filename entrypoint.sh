@@ -2,13 +2,18 @@
 set -e
 
 check_and_create_db() {
+  DB_HOST=db
+  POSTGRES_USER=user
+  POSTGRES_PASSWORD=password
+  DB_NAME=docker_chat_development
+
   DB_EXIST=$(PGPASSWORD=$POSTGRES_PASSWORD psql -h $DB_HOST -U $POSTGRES_USER -lqt | cut -d \| -f 1 | grep -w $DB_NAME | wc -l)
+  
   echo "Checking if DB exists..."
   if [ "$DB_EXIST" -eq 0 ]; then
     echo "Database does not exist. Creating..."
     bundle exec rake db:create
     bundle exec rake db:migrate
-    bundle exec rake db:seed
     echo "Database created."
   else
     echo "Database already exists."
