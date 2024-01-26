@@ -14,10 +14,12 @@ check_and_create_db() {
     echo "Database does not exist. Creating..."
     bundle exec rake db:create
     bundle exec rake db:migrate
+    bundle exec rake db:seed
     echo "Database created."
   else
     echo "Database already exists."
     bundle exec rake db:migrate
+    bundle exec rake db:seed
   fi
 }
 
