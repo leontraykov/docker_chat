@@ -17,6 +17,7 @@ check_and_create_db() {
     echo "Database created."
   else
     echo "Database already exists."
+    bundle exec rake db:migrate
   fi
 }
 
