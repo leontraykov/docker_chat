@@ -24,6 +24,10 @@ RUN bun install
 # Copy the application code to the container
 COPY . /docker_chat
 
+RUN bundle exec bun install
+RUN bundle exec bun run build
+RUN bundle exec bun run build:css
+
 # Set entrypoint and permissions
 COPY entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
