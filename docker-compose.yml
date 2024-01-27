@@ -23,8 +23,9 @@ services:
     ports:
       - "5000:5000"
     environment:
-      RAILS_ENV: development
-      DATABASE_URL: postgres://user:password@db/docker_chat_development
+      - SERVICE_TYPE=development
+      - RAILS_ENV=development
+      - DATABASE_URL=postgres://user:password@db/docker_chat_development
     depends_on:
       - db
       - redis
@@ -32,8 +33,9 @@ services:
   tests:
     build: .
     environment:
-      RAILS_ENV: test
-      DATABASE_URL: postgres://user:password@db/docker_chat_test
+      - SERVICE_TYPE=test
+      - RAILS_ENV=test
+      - DATABASE_URL=postgres://user:password@db/docker_chat_test
     command: /usr/bin/entrypoint.sh tests
     volumes:
       - .:/docker_chat

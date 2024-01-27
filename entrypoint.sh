@@ -7,6 +7,7 @@ check_and_create_db() {
   POSTGRES_USER=user
   POSTGRES_PASSWORD=password
   DB_NAME=$1  # Имя базы данных передаётся как аргумент функции
+  SERVICE_TYPE=$2  # Тип сервиса передаётся как аргумент функции
 
   # Проверка существования базы данных
   DB_EXIST=$(PGPASSWORD=$POSTGRES_PASSWORD psql -h $DB_HOST -U $POSTGRES_USER -lqt | cut -d \| -f 1 | grep -w $DB_NAME | wc -l)
@@ -14,15 +15,15 @@ check_and_create_db() {
   echo "Checking if $DB_NAME exists..."
   if [ "$DB_EXIST" -eq 0 ]; then
     echo "Database $DB_NAME does not exist. Creating..."
-    RAILS_ENV=$2 bundle exec rake db:create db:migrate
-    if [ ! -f /opt/app-initialized/$DB_NAME ]; then
+    RAILS_ENV=$SERVICE_TYPE bundle exec rake db:create db:migrate
+    if [ "$SERVICE_TYPE" = "development" ] && [ ! -f /opt/app-initialized/$DB_NAME ]; then
       bundle exec rake db:seed
       touch /opt/app-initialized/$DB_NAME
     fi
     echo "Database $DB_NAME created."
   else
     echo "Database $DB_NAME already exists."
-    RAILS_ENV=$2 bundle exec rake db:migrate
+    RAILS_ENV=$SERVICE_TYPE bundle exec rake db:migrate
   fi
 }
 
