@@ -59,5 +59,6 @@ if [ -f tmp/pids/server.pid ]; then
 fi
 
 bun_set_up
+check_and_create_db
 
 exec "$@"
