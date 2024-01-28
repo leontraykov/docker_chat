@@ -1,6 +1,12 @@
 #!/bin/bash
 set -e
 
+bun_set_up() {
+  bundle exec bun install
+  bundle exec bun run build
+  bundle exec bun run build:css
+}
+
 # Функция для проверки и создания базы данных
 check_and_create_db() {
   DB_HOST=db
@@ -28,38 +34,30 @@ check_and_create_db() {
 }
 
 if [ "$1" == "tests" ]; then
+  echo "No command specified, running tests by default..."
+
   echo "Waiting for PostgreSQL to become available..."
   until pg_isready -h db -p 5432 -U user; do
     sleep 2
   done
 
-  bundle exec bun install
-  bundle exec bun run build
-  bundle exec bun run build:css
+  bun_set_up
 
   check_and_create_db "docker_chat_test" "test"
 
   echo "PostgreSQL is available now."
-  echo "Running Cucumber tests..."
+  echo "Running tests..."
+
   bundle exec cucumber
-  echo "Running RSpec tests..."
   bundle exec rspec -f d
+
   exit 0
-else
-  # Проверка и создание базы данных для разработки
-  check_and_create_db "docker_chat_development" "development"
-  
-  if [ ! -f /opt/app-initialized/initialized ]; then
-    touch /opt/app-initialized/initialized
-  fi
 fi
 
 if [ -f tmp/pids/server.pid ]; then
   rm tmp/pids/server.pid
 fi
 
-bundle exec bun install
-bundle exec bun run build
-bundle exec bun run build:css
+bun_set_up
 
 exec "$@"

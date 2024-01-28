@@ -36,13 +36,12 @@ services:
       - SERVICE_TYPE=test
       - RAILS_ENV=test
       - DATABASE_URL=postgres://user:password@db/docker_chat_test
-    command: /usr/bin/entrypoint.sh tests
+    command: ["./entrypoint.sh", "tests"]
     volumes:
       - .:/docker_chat
       - init_volume:/opt/app-initialized
     depends_on:
       - db
-      - redis
 
   redis:
     image: redis:alpine
