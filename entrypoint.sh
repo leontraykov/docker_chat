@@ -22,14 +22,20 @@ check_and_create_db() {
   if [ "$DB_EXIST" -eq 0 ]; then
     echo "Database $DB_NAME does not exist. Creating..."
     RAILS_ENV=$SERVICE_TYPE bundle exec rake db:create db:migrate
-    if [ "$SERVICE_TYPE" = "development" ] && [ ! -f /opt/app-initialized/$DB_NAME ]; then
-      bundle exec rake db:seed
-      touch /opt/app-initialized/$DB_NAME
-    fi
-    echo "Database $DB_NAME created."
+    echo "Seeding database..."
+    RAILS_ENV=$SERVICE_TYPE bundle exec rake db:seed
+    touch /opt/app-initialized/$DB_NAME-initialized
+    echo "Database $DB_NAME created and seeded."
   else
     echo "Database $DB_NAME already exists."
-    RAILS_ENV=$SERVICE_TYPE bundle exec rake db:migrate
+    if [ ! -f /opt/app-initialized/$DB_NAME-initialized ]; then
+      echo "Running migrations and seeding for $DB_NAME..."
+      RAILS_ENV=$SERVICE_TYPE bundle exec rake db:migrate db:seed
+      touch /opt/app-initialized/$DB_NAME-initialized
+    else
+      echo "Running migrations for $DB_NAME..."
+      RAILS_ENV=$SERVICE_TYPE bundle exec rake db:migrate
+    fi
   fi
 }
 
