@@ -7,15 +7,13 @@ bun_set_up() {
   bundle exec bun run build:css
 }
 
-# Функция для проверки и создания базы данных
 check_and_create_db() {
   DB_HOST=db
   POSTGRES_USER=user
   POSTGRES_PASSWORD=password
-  DB_NAME=$1  # Имя базы данных передается как аргумент функции
-  SERVICE_TYPE=$2  # Тип сервиса передается как аргумент функции
+  DB_NAME=$1
+  SERVICE_TYPE=$2
 
-  # Проверка существования базы данных
   DB_EXIST=$(PGPASSWORD=$POSTGRES_PASSWORD psql -h $DB_HOST -U $POSTGRES_USER -lqt | cut -d \| -f 1 | grep -w $DB_NAME | wc -l)
 
   echo "Checking if $DB_NAME exists..."
@@ -23,7 +21,6 @@ check_and_create_db() {
     echo "Database $DB_NAME does not exist. Creating..."
     RAILS_ENV=$SERVICE_TYPE bundle exec rake db:create db:migrate
     
-    # Выполнение seed только для разработки или продакшн
     if [[ "$SERVICE_TYPE" != "test" ]]; then
       echo "Seeding database..."
       RAILS_ENV=$SERVICE_TYPE bundle exec rake db:seed
@@ -37,7 +34,6 @@ check_and_create_db() {
       echo "Running migrations and seeding (if applicable) for $DB_NAME..."
       RAILS_ENV=$SERVICE_TYPE bundle exec rake db:migrate
       
-      # Выполнение seed только для разработки или продакшн
       if [[ "$SERVICE_TYPE" != "test" ]]; then
         RAILS_ENV=$SERVICE_TYPE bundle exec rake db:seed
       fi
