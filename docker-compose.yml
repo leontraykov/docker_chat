@@ -42,6 +42,7 @@ services:
       - init_volume:/opt/app-initialized
     depends_on:
       - db
+      - redis
 
   redis:
     image: redis:alpine

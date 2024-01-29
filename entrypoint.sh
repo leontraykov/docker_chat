@@ -12,25 +12,36 @@ check_and_create_db() {
   DB_HOST=db
   POSTGRES_USER=user
   POSTGRES_PASSWORD=password
-  DB_NAME=$1  # Имя базы данных передаётся как аргумент функции
-  SERVICE_TYPE=$2  # Тип сервиса передаётся как аргумент функции
+  DB_NAME=$1  # Имя базы данных передается как аргумент функции
+  SERVICE_TYPE=$2  # Тип сервиса передается как аргумент функции
 
   # Проверка существования базы данных
   DB_EXIST=$(PGPASSWORD=$POSTGRES_PASSWORD psql -h $DB_HOST -U $POSTGRES_USER -lqt | cut -d \| -f 1 | grep -w $DB_NAME | wc -l)
-  
+
   echo "Checking if $DB_NAME exists..."
   if [ "$DB_EXIST" -eq 0 ]; then
     echo "Database $DB_NAME does not exist. Creating..."
     RAILS_ENV=$SERVICE_TYPE bundle exec rake db:create db:migrate
-    echo "Seeding database..."
-    RAILS_ENV=$SERVICE_TYPE bundle exec rake db:seed
+    
+    # Выполнение seed только для разработки или продакшн
+    if [[ "$SERVICE_TYPE" != "test" ]]; then
+      echo "Seeding database..."
+      RAILS_ENV=$SERVICE_TYPE bundle exec rake db:seed
+    fi
+
     touch /opt/app-initialized/$DB_NAME-initialized
-    echo "Database $DB_NAME created and seeded."
+    echo "Database $DB_NAME created and seeded (if applicable)."
   else
     echo "Database $DB_NAME already exists."
     if [ ! -f /opt/app-initialized/$DB_NAME-initialized ]; then
-      echo "Running migrations and seeding for $DB_NAME..."
-      RAILS_ENV=$SERVICE_TYPE bundle exec rake db:migrate db:seed
+      echo "Running migrations and seeding (if applicable) for $DB_NAME..."
+      RAILS_ENV=$SERVICE_TYPE bundle exec rake db:migrate
+      
+      # Выполнение seed только для разработки или продакшн
+      if [[ "$SERVICE_TYPE" != "test" ]]; then
+        RAILS_ENV=$SERVICE_TYPE bundle exec rake db:seed
+      fi
+
       touch /opt/app-initialized/$DB_NAME-initialized
     else
       echo "Running migrations for $DB_NAME..."
