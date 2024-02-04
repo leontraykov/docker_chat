@@ -5,6 +5,8 @@ bun_set_up() {
   bundle exec bun install
   bundle exec bun run build
   bundle exec bun run build:css
+
+  bunx cowsay 'Я, как его утилита, утверждаю, что Bun установлен!'
 }
 
 check_and_create_db() {
@@ -53,8 +55,6 @@ if [ "$1" == "tests" ]; then
   until pg_isready -h db -p 5432 -U user; do
     sleep 2
   done
-
-  bun_set_up
 
   check_and_create_db "docker_chat_test" "test"
 
