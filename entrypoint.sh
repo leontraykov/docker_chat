@@ -74,4 +74,6 @@ fi
 bun_set_up
 check_and_create_db
 
+bundle exec rails assets:precompile
+
 exec "$@"
