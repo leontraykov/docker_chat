@@ -1,3 +1,5 @@
+import { Controller } from "@hotwired/stimulus"
+
 export default class extends Controller {
   static targets = [ "select", "chosen" ]
 
@@ -6,18 +8,23 @@ export default class extends Controller {
   }
 
   updateChosen() {
-    const chosen = Array.from(this.selectTarget.selectedOptions)
-      .map(option => `<span class="badge bg-secondary me-1">${option.text}<button data-action="dblclick->select-users#removeUser" data-user-id="${option.value}" class="btn-close btn-close-white ms-2" aria-label="Close"></button></span>`)
-      .join(", ")
-    this.chosenTarget.innerHTML = chosen
+    const template = document.getElementById('user-badge-template').content;
+    this.chosenTarget.innerHTML = '';
+    Array.from(this.selectTarget.selectedOptions).forEach(option => {
+      const clone = document.importNode(template, true);
+      clone.querySelector('[data-role="user-name"]').textContent = option.text;
+      const removeButton = clone.querySelector('button');
+      removeButton.dataset.userId = option.value;
+      this.chosenTarget.appendChild(clone);
+    });
   }
 
   removeUser(event) {
-    const userId = event.currentTarget.getAttribute('data-user-id')
-    const option = Array.from(this.selectTarget.options).find(option => option.value === userId)
+    const userId = event.currentTarget.dataset.userId;
+    const option = Array.from(this.selectTarget.options).find(option => option.value === userId);
     if (option) {
-      option.selected = false
-      this.updateChosen()
+      option.selected = false;
+      this.updateChosen();
     }
   }
 }
