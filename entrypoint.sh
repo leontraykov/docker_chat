@@ -56,13 +56,16 @@ if [ "$1" == "tests" ]; then
     sleep 2
   done
 
-  check_and_create_db "docker_chat_test" "test"
-
+  # check_and_create_db "docker_chat_test" "test"
+  bin/rails db:environment:set RAILS_ENV=test
+  
+  RAILS_ENV=test bundle exec rake db:drop db:create db:migrate
+  
   echo "PostgreSQL is available now."
   echo "Running tests..."
 
   bundle exec cucumber
-  bundle exec rspec -f d
+  INSPECTOR=true bundle exec rspec -f d
 
   exit 0
 fi

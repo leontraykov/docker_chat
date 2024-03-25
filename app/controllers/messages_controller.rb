@@ -5,7 +5,7 @@ class MessagesController < ApplicationController
   before_action :set_chat_room
 
   def create
-    @message = current_user.messages.create(content: message_params[:content], chat_room_id: params[:chat_room_id])
+    @message = current_user.messages.new(content: message_params[:content], chat_room_id: params[:chat_room_id])
 
     respond_to do |format|
       if @message.save
