@@ -1,21 +1,21 @@
-  require 'rails_helper'
+# frozen_string_literal: true
 
-  RSpec.feature 'User logining', type: :feature do
-    let(:user) { create(:user) }
+require 'rails_helper'
 
-    describe 'Visiting the login page filling the form and submit' do
-      it 'should let user in and show the greeting' do
-    
-        visit root_path
+RSpec.feature 'User logining', type: :feature do
+  let(:user) { create(:user) }
 
-        expect(page).to have_button 'Login'
+  describe 'Visiting the login page filling the form and submit' do
+    it 'should let user in and show the greeting' do
+      visit root_path
 
-        fill_in :user_email, with: user.email
-        fill_in :user_password, with: user.password
+      expect(page).to have_button 'Login'
 
-        click_button 'Login'
-        expect(page).to have_text 'Welcome'
-  
-      end
+      fill_in :user_email, with: user.email
+      fill_in :user_password, with: user.password
+
+      click_button 'Login'
+      expect(page).to have_text 'Welcome'
     end
   end
+end

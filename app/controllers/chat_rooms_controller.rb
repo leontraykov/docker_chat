@@ -2,6 +2,7 @@
 
 class ChatRoomsController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_exact_room, only: [:show]
 
   def index
     @chat_rooms = ChatRoom.all
@@ -15,10 +16,9 @@ class ChatRoomsController < ApplicationController
   end
 
   def create
-    @chat_room = ChatRoom.new(chat_room_params)
+    @chat_room = ChatRoom.create_with_user(chat_room_params, current_user)
 
-    if @chat_room.save
-      @chat_room.users << current_user
+    if @chat_room.persisted?
       redirect_to @chat_room, notice: 'Done. Freedom of speech!'
     else
       @users = User.without_me(current_user)
@@ -27,17 +27,10 @@ class ChatRoomsController < ApplicationController
   end
 
   def show
-    @exact_room = ChatRoom.find_by(id: params[:id])
-
     if @exact_room.nil?
       redirect_to chat_rooms_path, alert: 'Chat room not found.'
     else
-      @room = ChatRoom.new
-      @rooms = ChatRoom.all
-      @message = Message.new
-      @messages = @exact_room.messages.order(created_at: :asc)
-      @current_user = current_user
-      @users = User.without_me(@current_user)
+      set_additional_resources
     end
   end
 
@@ -45,5 +38,17 @@ class ChatRoomsController < ApplicationController
 
   def chat_room_params
     params.require(:chat_room).permit(:name, user_ids: [])
+  end
+
+  def set_exact_room
+    @exact_room = ChatRoom.find_by(id: params[:id])
+  end
+
+  def set_additional_resources
+    @room = ChatRoom.new
+    @rooms = ChatRoom.all
+    @message = Message.new
+    @messages = @exact_room.messages.order(created_at: :asc)
+    @users = User.without_me(current_user)
   end
 end

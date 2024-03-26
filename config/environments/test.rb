@@ -20,7 +20,7 @@ Rails.application.configure do
   ]
 
   config.hosts.clear
-  
+
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Turn false under Spring and add config.action_view.cache_template_loading = true.

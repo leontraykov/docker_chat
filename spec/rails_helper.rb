@@ -44,11 +44,11 @@ RSpec.configure do |config|
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.include Devise::Test::IntegrationHelpers, type: :feature
   config.include FactoryBot::Syntax::Methods
-  
+
   Capybara.register_driver(:cuprite) do |app|
     Capybara::Cuprite::Driver.new(app, browser_options: { 'no-sandbox': nil }, inspector: ENV['INSPECTOR'])
   end
-  
+
   Capybara.configure do |capybara_config|
     capybara_config.default_driver = :rack_test # Это драйвер по умолчанию, который не поддерживает JavaScript
   end

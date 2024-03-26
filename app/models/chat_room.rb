@@ -10,6 +10,12 @@ class ChatRoom < ApplicationRecord
 
   after_create_commit { broadcast_append_to 'chat_rooms' }
 
+  def self.create_with_user(params, user)
+    chat_room = create(params)
+    chat_room.users << user if chat_room.persisted?
+    chat_room
+  end
+
   private
 
   def set_name
