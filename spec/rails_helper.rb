@@ -46,11 +46,20 @@ RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
 
   Capybara.register_driver(:cuprite) do |app|
-    Capybara::Cuprite::Driver.new(app, browser_options: { 'no-sandbox': nil }, inspector: ENV['INSPECTOR'])
+    Capybara::Cuprite::Driver.new(
+      app, 
+      browser_options: { 'no-sandbox': nil }, 
+      inspector: ENV['INSPECTOR'], 
+      window_size: [1200, 800])
   end
 
   Capybara.configure do |capybara_config|
-    capybara_config.default_driver = :rack_test # Это драйвер по умолчанию, который не поддерживает JavaScript
+    capybara_config.default_driver = :cuprite
+    capybara_config.javascript_driver = :cuprite
+    capybara_config.default_max_wait_time = 10
   end
-  Capybara.javascript_driver = :cuprite
+
+  config.after do |example|
+    Capybara.reset_sessions! if example.metadata[:type] == :feature
+  end
 end

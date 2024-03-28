@@ -35,3 +35,5 @@ end
 group :test do
   gem 'cuprite'
 end
+
+gem "logger", "~> 1.6"
