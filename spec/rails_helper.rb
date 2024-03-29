@@ -47,10 +47,11 @@ RSpec.configure do |config|
 
   Capybara.register_driver(:cuprite) do |app|
     Capybara::Cuprite::Driver.new(
-      app, 
-      browser_options: { 'no-sandbox': nil }, 
-      inspector: ENV['INSPECTOR'], 
-      window_size: [1200, 800])
+      app,
+      browser_options: { 'no-sandbox': nil },
+      inspector: ENV['INSPECTOR'],
+      window_size: [1200, 800]
+    )
   end
 
   Capybara.configure do |capybara_config|
