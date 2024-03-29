@@ -1,17 +1,19 @@
 [RU]
 # ЧатЧат
 
-Это приложение - чат, где пользователи могут создавать комнаты и обмениваться сообщениями в реальном времени. Проект разработан с использованием Ruby on Rails 7, Bun, Docker, PostgreSQL, Hotwire Turbo & Stimulus, Rspec, Devise и Bootstrap 5, а также протестирован с помощью Cucumber и RSpec.
+Это приложение — чат, где пользователи могут создавать комнаты и обмениваться сообщениями в реальном времени. Проект разработан с использованием Ruby on Rails 7, Docker, PostgreSQL, Hotwire Turbo & Stimulus, Rspec, Devise, и Bootstrap 5.
+
+В тестах, выполненных с помощью Cucumber и RSpec, используется драйвер Cuprite для имитации действий пользователя в браузере. Это позволяет проверить, что сообщения в чате появляются в реальном времени без необходимости перезагрузки страницы, демонстрируя работу асинхронных JavaScript операций.
 
 Включает в себя автоматическое создание начальных данных: предустановлены пользователи (например, user_1@ex.co с паролем user_1_password) и чат-комнаты (например, "Общая Чат-Комната"). Это позволяет быстро начать использование приложения.
 
 ## Функциональность
 
-- Создание и вход в комнаты для общения.
-- Обмен сообщениями в реальном времени.
-- Автоматическое обновление списка пользователей, чат-комнат и сообщений при появлении новых.
+- Возможность создания и входа в чат-комнаты для обмена сообщениями.
+- Обмен сообщениями в реальном времени без необходимости перезагрузки страницы.
+- Автоматическое обновление списка пользователей, чат-комнат и сообщений при их появлении.
 - Очистка поля ввода после отправки сообщения.
-- Полная поддержка тестирования с использованием Cucumber и RSpec.
+- Полное тестовое покрытие, включая тестирование асинхронного взаимодействия, с использованием Cucumber, RSpec и Capybara с драйвером Cuprite.
 
 ## Установка и Запуск с Docker
 
@@ -35,17 +37,19 @@
 [EN]
 # ChatChat
 
-This application is a chat platform where users can create rooms and exchange messages in real time. The project is developed using Ruby on Rails 7, Docker, PostgreSQL, Hotwire Turbo & Stimulus, Rspec, Devise, and Bootstrap 5, and it's thoroughly tested with Cucumber and RSpec.
+This application is a chat platform where users can create rooms and exchange messages in real-time. The project is developed using Ruby on Rails 7, Docker, PostgreSQL, Hotwire Turbo & Stimulus, Rspec, Devise, and Bootstrap 5.
 
-Includes automatic creation of initial data: pre-set users (for example, user_1@ex.co with the password user_1_password) and chat rooms (for example, "Common Chat Room"). This allows you to quickly start using the application.
+In the tests, performed with Cucumber and RSpec, the Cuprite driver is used to simulate user actions in the browser. This allows us to verify that messages in the chat appear in real-time without the need for page reloading, demonstrating the operation of asynchronous JavaScript operations.
+
+The application includes automatic creation of initial data: preset users (for example, user_1@ex.co with password user_1_password) and chat rooms (for example, "General Chat Room"). This allows you to quickly start using the application.
 
 ## Features
 
-- Creating and joining chat rooms for communication.
-- Real-time message exchange.
-- Automatic updates of user lists, chat rooms, and messages when new ones appear.
+- Ability to create and enter chat rooms for message exchange.
+- Real-time message exchange without the need for page reloading.
+- Automatic updates of the user list, chat rooms, and messages when they appear.
 - Clearing the input field after sending a message.
-- Comprehensive testing support with Cucumber and RSpec.
+- Comprehensive test coverage, including testing of asynchronous interactions, using Cucumber, RSpec, and Capybara with the Cuprite driver.
 
 ## Installation and Launch with Docker
 
